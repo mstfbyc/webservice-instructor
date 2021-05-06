@@ -15,6 +15,8 @@ import javax.validation.constraints.Size;
 @Data
 @Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue
@@ -22,9 +24,9 @@ public class User {
     private Long id;
 
     @NotNull
-    @Column(name = "username")
+    @Column(name = "username" )
     @Size(min = 4, max = 30)
-    //@UniqueUsername
+    @UniqueUsername
     private String username;
 
     @NotNull
