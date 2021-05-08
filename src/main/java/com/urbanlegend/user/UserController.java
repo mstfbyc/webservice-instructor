@@ -24,18 +24,6 @@ public class UserController {
     @PostMapping("/api/1.0/users")
     @ResponseStatus(HttpStatus.CREATED)
     public GenericResponse createUser(@Valid @RequestBody User user){
-/*        Map<String,String> validationErrors = new HashMap<>();
-        ApiError error = new ApiError(400,"Validation error","api/1.0/users");
-        if(user.getUsername()==null || user.getUsername().isEmpty()){
-            validationErrors.put("username","Username cannot be null");
-        }
-        if(user.getDisplayName() == null || user.getDisplayName().isEmpty()){
-            validationErrors.put("displayName","displayName cannot be null");
-        }
-        if(validationErrors.size()>0){
-            error.setValidationErrors(validationErrors);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        }*/
         userService.saveUser(user);
         GenericResponse response = new GenericResponse();
         response.setMessage("User Created");
