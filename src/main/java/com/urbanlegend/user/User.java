@@ -23,19 +23,19 @@ public class User {
     @Column(name="user_id")
     private Long id;
 
-    @NotNull
+    @NotNull(message = "{urbanlegend.constraint.username.NotNull.message}")
     @Column(name = "username" )
     @Size(min = 4, max = 30)
-    @UniqueUsername
+    @UniqueUsername(message ="{urbanlegend.constraint.username.UniqueUsername.message}" )
     private String username;
 
-    @NotNull
+    @NotNull(message = "{urbanlegend.constraint.displayName.NotNull.message}")
     @Column(name="displayname")
     @Size(min = 4, max = 30)
     private String displayName;
 
     @Column(name = "password")
     @Size(min = 8, max = 12)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$", message = "{urbanlegend.constrain.password.Pattern.message}")
     private String password;
 }
