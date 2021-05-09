@@ -21,6 +21,6 @@ public class UserAuthService implements UserDetailsService {
         if(checkUser ==null){
            throw new UsernameNotFoundException("User not Found");
         }
-        return new UrbanLegendsUserDetails(checkUser);
+        return checkUser;
     }
 }
