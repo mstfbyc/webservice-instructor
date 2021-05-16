@@ -53,11 +53,6 @@ public class UserController {
     @ApiOperation(value = "Update User", notes = "Urban legends update user ")
     @PreAuthorize("#username == principal.username")
     public ResponseEntity<?>  updateUser(@RequestBody UserUpdateVM userUpdateVM,@PathVariable String username){
-        //PreAuthorize sonra çıkar
- /*       if(!currentUser.getUsername().equalsIgnoreCase(username)){
-            ApiError error = new ApiError(403, "Cannott change another user data","/api/1.0/users"+username);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
-        }*/
         User user = userService.updateUser(username,userUpdateVM);
         return ResponseEntity.ok(new UserVM(user));
     }
