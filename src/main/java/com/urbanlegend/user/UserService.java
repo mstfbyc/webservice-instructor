@@ -1,21 +1,27 @@
 package com.urbanlegend.user;
 
 import com.urbanlegend.error.NotFoundException;
+import com.urbanlegend.file.FileService;
 import com.urbanlegend.user.vm.UserUpdateVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.util.Base64;
+
 @Service
 public class UserService {
 
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+    FileService fileService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, FileService fileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.fileService = fileService;
     }
 
     public void saveUser(User user){
@@ -44,6 +50,17 @@ public class UserService {
     public User updateUser(String username, UserUpdateVM userUpdateVM) {
         User user = getUser(username);
         user.setDisplayName(userUpdateVM.getDisplayName());
+        if(userUpdateVM.getImage()!=null){
+            //user.setImage(userUpdateVM.getImage());
+            try {
+                String storedFileName = fileService.writeBase64EncodedStringToFile(userUpdateVM.getImage());
+                user.setImage(storedFileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return userRepository.save(user);
     }
+
+
 }

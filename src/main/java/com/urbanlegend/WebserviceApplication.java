@@ -1,15 +1,16 @@
 package com.urbanlegend;
 
 
+import com.urbanlegend.configuration.AppConfiguration;
 import com.urbanlegend.user.User;
 import com.urbanlegend.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import springfox.documentation.builders.AuthorizationCodeGrantBuilder;
-import springfox.documentation.builders.OAuthBuilder;
+import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
@@ -17,20 +18,22 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableSwagger2
 public class WebserviceApplication {
+	@Autowired
+	AppConfiguration appConfiguration;
 
 	public static void main(String[] args) {
 		SpringApplication.run(WebserviceApplication.class, args);
 	}
 
 	@Bean
+	@Profile("dev")
 	CommandLineRunner createInitialUsers(UserService userService) {
 		return (args) -> {
 			for (int i = 1; i < 20; i++) {
@@ -68,6 +71,18 @@ public class WebserviceApplication {
 				.paths(PathSelectors.any())
 				.build()
 				;
+	}
+
+	@Bean
+	CommandLineRunner createStorageDirectories(){
+		return (args) -> {
+			File folder = new File(appConfiguration.getUploadPath());
+			boolean folderExist = folder.exists() && folder.isDirectory();
+			if(!folderExist){
+				folder.mkdir();
+			}
+
+		};
 	}
 
 
