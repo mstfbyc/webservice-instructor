@@ -1,6 +1,7 @@
 package com.urbanlegend.user;
 
 import com.urbanlegend.error.NotFoundException;
+import com.urbanlegend.user.vm.UserUpdateVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,5 +39,11 @@ public class UserService {
             throw new NotFoundException();
         }
         return user;
+    }
+
+    public User updateUser(String username, UserUpdateVM userUpdateVM) {
+        User user = getUser(username);
+        user.setDisplayName(userUpdateVM.getDisplayName());
+        return userRepository.save(user);
     }
 }

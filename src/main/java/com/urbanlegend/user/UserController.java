@@ -1,9 +1,11 @@
 package com.urbanlegend.user;
 
 
+import com.urbanlegend.error.ApiError;
 import com.urbanlegend.shared.CurrentUser;
 import com.urbanlegend.shared.GenericResponse;
 
+import com.urbanlegend.user.vm.UserUpdateVM;
 import com.urbanlegend.user.vm.UserVM;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
@@ -43,6 +46,19 @@ public class UserController {
     @ApiOperation(value = "Get all users")
     public  ResponseEntity<UserVM> user(@PathVariable String username){
         User user = userService.getUser(username);
+        return ResponseEntity.ok(new UserVM(user));
+    }
+
+    @PutMapping("/users/{username}")
+    @ApiOperation(value = "Update User", notes = "Urban legends update user ")
+    @PreAuthorize("#username == principal.username")
+    public ResponseEntity<?>  updateUser(@RequestBody UserUpdateVM userUpdateVM,@PathVariable String username){
+        //PreAuthorize sonra çıkar
+ /*       if(!currentUser.getUsername().equalsIgnoreCase(username)){
+            ApiError error = new ApiError(403, "Cannott change another user data","/api/1.0/users"+username);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+        }*/
+        User user = userService.updateUser(username,userUpdateVM);
         return ResponseEntity.ok(new UserVM(user));
     }
 }
