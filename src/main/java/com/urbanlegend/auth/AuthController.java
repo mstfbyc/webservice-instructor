@@ -4,6 +4,7 @@ import com.urbanlegend.error.ApiError;
 import com.urbanlegend.shared.CurrentUser;
 import com.urbanlegend.user.User;
 import com.urbanlegend.user.UserRepository;
+import com.urbanlegend.user.vm.UserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class AuthController {
     UserRepository userRepository;
 
     @PostMapping("/api/1.0/auth")
-    public ResponseEntity<?> handleAuthentication(@CurrentUser User user){
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserVM> handleAuthentication(@CurrentUser User user){
+        return ResponseEntity.ok(new UserVM(user));
     }
 }
