@@ -1,10 +1,7 @@
 package com.urbanlegend.user;
 
-
-import com.urbanlegend.error.ApiError;
 import com.urbanlegend.shared.CurrentUser;
 import com.urbanlegend.shared.GenericResponse;
-
 import com.urbanlegend.user.vm.UserUpdateVM;
 import com.urbanlegend.user.vm.UserVM;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-
 
 @RestController
 @RequestMapping("/api/1.0")
@@ -33,7 +29,6 @@ public class UserController {
         GenericResponse response = new GenericResponse();
         response.setMessage("User Created");
         return response;
-
     }
     @GetMapping("/users")
     @ApiOperation(value = "Get all users")

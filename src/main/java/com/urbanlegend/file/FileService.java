@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -30,5 +32,12 @@ public class FileService {
     }
     public String generateRandomName(){
         return UUID.randomUUID().toString().replaceAll("-","");
+    }
+
+    public void deleteFile(String oldImage) throws IOException {
+        if (oldImage == null) {
+            return;
+        }
+        Files.deleteIfExists(Paths.get(appConfiguration.getUploadPath(),oldImage));
     }
 }
