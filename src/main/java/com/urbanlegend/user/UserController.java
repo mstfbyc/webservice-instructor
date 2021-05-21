@@ -47,7 +47,7 @@ public class UserController {
     @PutMapping("/users/{username}")
     @ApiOperation(value = "Update User", notes = "Urban legends update user ")
     @PreAuthorize("#username == principal.username")
-    public ResponseEntity<?>  updateUser(@RequestBody UserUpdateVM userUpdateVM,@PathVariable String username){
+    public ResponseEntity<?>  updateUser(@Valid @RequestBody UserUpdateVM userUpdateVM,@PathVariable String username){
         User user = userService.updateUser(username,userUpdateVM);
         return ResponseEntity.ok(new UserVM(user));
     }

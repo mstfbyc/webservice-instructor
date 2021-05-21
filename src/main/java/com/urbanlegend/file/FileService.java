@@ -1,10 +1,9 @@
 package com.urbanlegend.file;
 
 import com.urbanlegend.configuration.AppConfiguration;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,16 +15,21 @@ import java.util.UUID;
 
 @Service
 public class FileService {
-    @Autowired
     AppConfiguration appConfiguration;
+    private Tika tika;
 
-
+    public FileService(AppConfiguration appConfiguration) {
+        this.appConfiguration = appConfiguration;
+        this.tika = new Tika();
+    }
 
     public String writeBase64EncodedStringToFile(String image) throws IOException {
+
         String fileName =generateRandomName();
         File target = new File(appConfiguration.getUploadPath()+"/"+fileName);
         OutputStream outputStream = new FileOutputStream(target);
         byte[] base64encoded = Base64.getDecoder().decode(image);
+
         outputStream.write(base64encoded);
         outputStream.close();
         return fileName;
@@ -39,5 +43,10 @@ public class FileService {
             return;
         }
         Files.deleteIfExists(Paths.get(appConfiguration.getUploadPath(),oldImage));
+    }
+
+    public String detectType(String value) {
+        byte[] base64encoded = Base64.getDecoder().decode(value);
+        return tika.detect(base64encoded);
     }
 }
