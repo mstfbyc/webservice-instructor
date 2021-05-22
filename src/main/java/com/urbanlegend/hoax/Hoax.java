@@ -1,5 +1,6 @@
 package com.urbanlegend.hoax;
 
+import com.urbanlegend.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,5 +19,8 @@ public class Hoax {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
+
+    @ManyToOne
+    private User user;
 
 }

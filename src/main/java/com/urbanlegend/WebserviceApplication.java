@@ -45,13 +45,12 @@ public class WebserviceApplication {
 						.password("Password123")
 						.build();
 				userService.saveUser(user);
+				for (int j = 1; j <=2 ; j++) {
+					Hoax hoax = new Hoax();
+					hoax.setContent("hoax - ("+j+") From user("+i+")");
+					hoaxService.save(hoax,user);
+				}
 			}
-			for (int i = 1; i <=50 ; i++) {
-				Hoax hoax = new Hoax();
-				hoax.setContent("hoax - "+i);
-				hoaxService.save(hoax);
-			}
-
 		};
 	}
 
