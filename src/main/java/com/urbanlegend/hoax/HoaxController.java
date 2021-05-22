@@ -2,20 +2,31 @@ package com.urbanlegend.hoax;
 
 import com.urbanlegend.shared.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("api/1.0")
+@RestController("/api/1.0")
 public class HoaxController {
 
     @Autowired
     HoaxService hoaxService;
 
-    @PostMapping("hoaxes")
+    @PostMapping("/hoaxes")
     ResponseEntity<GenericResponse> saveHoax(@RequestBody Hoax hoax){
         hoaxService.save(hoax);
         return ResponseEntity.ok(new GenericResponse("Hoax başarı ile kaydedildi."));
+    }
+
+    @GetMapping("/hoaxes")
+    ResponseEntity<Page<Hoax>> getHoax(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page){
+        return ResponseEntity.ok(hoaxService.getHoaxes(page));
+
     }
 }
