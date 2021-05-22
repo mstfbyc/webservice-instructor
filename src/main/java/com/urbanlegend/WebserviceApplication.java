@@ -2,6 +2,8 @@ package com.urbanlegend;
 
 
 import com.urbanlegend.configuration.AppConfiguration;
+import com.urbanlegend.hoax.Hoax;
+import com.urbanlegend.hoax.HoaxService;
 import com.urbanlegend.user.User;
 import com.urbanlegend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class WebserviceApplication {
 
 	@Bean
 	@Profile("dev")
-	CommandLineRunner createInitialUsers(UserService userService) {
+	CommandLineRunner createInitialUsers(UserService userService, HoaxService hoaxService) {
 		return (args) -> {
 			for (int i = 1; i < 20; i++) {
 				User user = User.builder()
@@ -43,6 +45,11 @@ public class WebserviceApplication {
 						.password("Password123")
 						.build();
 				userService.saveUser(user);
+			}
+			for (int i = 1; i <=50 ; i++) {
+				Hoax hoax = new Hoax();
+				hoax.setContent("hoax - "+i);
+				hoaxService.save(hoax);
 			}
 
 		};
