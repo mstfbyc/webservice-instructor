@@ -10,9 +10,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({  FIELD })
 @Retention(RUNTIME)
-@Constraint(validatedBy = {ProfileImageValidator.class })
-public @interface ProfileImage {
+@Constraint(validatedBy = {FileTypeValidator.class })
+public @interface FileType {
     String message() default "{urbanlegend.constraint.ProfileImage.message}";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
+    String[] types();
 }
