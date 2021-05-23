@@ -53,7 +53,7 @@ public class UserService {
             try {
                 String storedFileName = fileService.writeBase64EncodedStringToFile(userUpdateVM.getImage());
                 user.setImage(storedFileName);
-                fileService.deleteFile(oldImage);
+                fileService.deleteProfileImage(oldImage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
