@@ -1,5 +1,8 @@
 package com.urbanlegend.hoax;
 
+import com.urbanlegend.file.FileAttachment;
+import com.urbanlegend.file.FileAttachmentRepository;
+import com.urbanlegend.hoax.vm.HoaxSubmitVM;
 import com.urbanlegend.user.User;
 import com.urbanlegend.user.UserService;
 import org.springframework.data.domain.Page;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HoaxService {
@@ -17,18 +21,27 @@ public class HoaxService {
 
     HoaxRepository hoaxRepository;
     UserService userService;
+    FileAttachmentRepository fileAttachmentRepository;
 
 
-    public HoaxService(HoaxRepository hoaxRepository, UserService userService) {
-
+    public HoaxService(HoaxRepository hoaxRepository, UserService userService, FileAttachmentRepository fileAttachmentRepository) {
         this.hoaxRepository = hoaxRepository;
         this.userService = userService;
+        this.fileAttachmentRepository = fileAttachmentRepository;
     }
 
-    public void save(Hoax hoax, User user) {
+    public void save(HoaxSubmitVM hoaxSubmitVM, User user) {
+        Hoax hoax = new Hoax();
+        hoax.setContent(hoaxSubmitVM.getContent());
         hoax.setTimestamp(new Date());
         hoax.setUser(user);
         hoaxRepository.save(hoax);
+        Optional<FileAttachment> optionalFileAttachment = fileAttachmentRepository.findById(hoaxSubmitVM.getAttachmentId());
+        if(optionalFileAttachment.isPresent()) {
+            FileAttachment fileAttachment = optionalFileAttachment.get();
+            fileAttachment.setHoax(hoax);
+            fileAttachmentRepository.save(fileAttachment);
+        }
     }
 
     public Page<Hoax> getHoaxes(Pageable page) {
