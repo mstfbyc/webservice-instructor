@@ -2,6 +2,7 @@ package com.urbanlegend.hoax;
 
 import com.urbanlegend.file.FileAttachment;
 import com.urbanlegend.file.FileAttachmentRepository;
+import com.urbanlegend.file.FileService;
 import com.urbanlegend.hoax.vm.HoaxSubmitVM;
 import com.urbanlegend.user.User;
 import com.urbanlegend.user.UserService;
@@ -22,12 +23,14 @@ public class HoaxService {
     HoaxRepository hoaxRepository;
     UserService userService;
     FileAttachmentRepository fileAttachmentRepository;
+    FileService fileService;
 
 
-    public HoaxService(HoaxRepository hoaxRepository, UserService userService, FileAttachmentRepository fileAttachmentRepository) {
+    public HoaxService(HoaxRepository hoaxRepository, UserService userService, FileAttachmentRepository fileAttachmentRepository,FileService fileService) {
         this.hoaxRepository = hoaxRepository;
         this.userService = userService;
         this.fileAttachmentRepository = fileAttachmentRepository;
+        this.fileService = fileService;
     }
 
     public void save(HoaxSubmitVM hoaxSubmitVM, User user) {
@@ -99,4 +102,12 @@ public class HoaxService {
         };
     }
 
+    public void delete(long id) {
+        Hoax hoax = hoaxRepository.getOne(id);
+        if(hoax.getFileAttachment() != null) {
+            String fileName = hoax.getFileAttachment().getName();
+            fileService.deleteAttachmentFile(fileName);
+        }
+        hoaxRepository.deleteById(id);
+    }
 }
