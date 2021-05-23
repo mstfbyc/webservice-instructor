@@ -1,10 +1,12 @@
 package com.urbanlegend.hoax;
 
+import com.urbanlegend.hoax.vm.HoaxSubmitVM;
 import com.urbanlegend.hoax.vm.HoaxVM;
 import com.urbanlegend.shared.CurrentUser;
 import com.urbanlegend.shared.GenericResponse;
 import com.urbanlegend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,7 @@ public class HoaxController {
     HoaxService hoaxService;
 
     @PostMapping("/hoaxes")
-    ResponseEntity<GenericResponse> saveHoax(@RequestBody Hoax hoax, @CurrentUser User user){
+    ResponseEntity<GenericResponse> saveHoax(@Valid @RequestBody HoaxSubmitVM hoax, @CurrentUser User user){
         hoaxService.save(hoax,user);
         return ResponseEntity.ok(new GenericResponse("Hoax başarı ile kaydedildi."));
     }
@@ -59,4 +62,11 @@ public class HoaxController {
 
         return ResponseEntity.ok(hoaxService.getOldHoaxes(id, username, page).map(HoaxVM::new));
     }
+
+/*    @DeleteMapping("/hoaxes/{id:[0-9]+}")
+    @PreAuthorize("@hoaxSecurity.isAllowedToDelete(#id, principal)")
+    GenericResponse deleteHoax(@PathVariable long id) {
+        hoaxService.delete(id);
+        return new GenericResponse("Hoax removed");
+    }*/
 }

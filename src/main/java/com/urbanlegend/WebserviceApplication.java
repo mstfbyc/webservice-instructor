@@ -4,6 +4,7 @@ package com.urbanlegend;
 import com.urbanlegend.configuration.AppConfiguration;
 import com.urbanlegend.hoax.Hoax;
 import com.urbanlegend.hoax.HoaxService;
+import com.urbanlegend.hoax.vm.HoaxSubmitVM;
 import com.urbanlegend.user.User;
 import com.urbanlegend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class WebserviceApplication {
 						.build();
 				userService.saveUser(user);
 				for (int j = 1; j <=2 ; j++) {
-					Hoax hoax = new Hoax();
+					HoaxSubmitVM hoax = new HoaxSubmitVM();
 					hoax.setContent("hoax - ("+j+") From user("+i+")");
 					hoaxService.save(hoax,user);
 				}
