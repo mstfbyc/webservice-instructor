@@ -79,19 +79,4 @@ public class WebserviceApplication {
 				.build()
 				;
 	}
-
-	@Bean
-	CommandLineRunner createStorageDirectories(){
-		return (args) -> {
-			File folder = new File(appConfiguration.getUploadPath());
-			boolean folderExist = folder.exists() && folder.isDirectory();
-			if(!folderExist){
-				folder.mkdir();
-			}
-
-		};
-	}
-
-
-
 }

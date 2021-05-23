@@ -1,5 +1,6 @@
 package com.urbanlegend.user;
 
+import com.urbanlegend.auth.Token;
 import com.urbanlegend.hoax.Hoax;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,6 +45,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy="user", cascade=CascadeType.REMOVE)
     private List<Hoax> hoaxes;
+
+    @OneToMany(mappedBy="user", cascade=CascadeType.REMOVE)
+    private List<Token> tokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
