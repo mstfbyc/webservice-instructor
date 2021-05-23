@@ -61,4 +61,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void deleteUser(String username) {
+        User user = userRepository.findByUsername(username);
+        fileService.deleteAllStoredFilesForUser(user);
+        userRepository.delete(user);
+    }
 }

@@ -1,6 +1,7 @@
 package com.urbanlegend.file;
 
 import com.urbanlegend.configuration.AppConfiguration;
+import com.urbanlegend.user.User;
 import org.apache.tika.Tika;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -103,5 +104,13 @@ public class FileService {
             fileAttachmentRepository.deleteById(file.getId());
         }
 
+    }
+
+    public void deleteAllStoredFilesForUser(User user) {
+        deleteProfileImage(user.getImage());
+        List<FileAttachment> filesToBeRemoved = fileAttachmentRepository.findByHoaxUser(user);
+        for(FileAttachment file: filesToBeRemoved) {
+            deleteAttachmentFile(file.getName());
+        }
     }
 }
