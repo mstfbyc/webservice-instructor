@@ -46,7 +46,7 @@ public class WebserviceApplication {
 					User user = new User();
 					user.setUsername("user"+i);
 					user.setDisplayName("display"+i);
-					user.setPassword("P4ssword");
+					user.setPassword("Password123");
 					userService.saveUser(user);
 					for(int j = 1;j<=20;j++) {
 						HoaxSubmitVM hoax = new HoaxSubmitVM();
