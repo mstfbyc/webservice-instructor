@@ -32,24 +32,24 @@ public class UserController {
     }
     @GetMapping("/users")
     @ApiOperation(value = "Get all users")
-    public  ResponseEntity<Page<UserVM>> allusers(Pageable pageable, @CurrentUser User user){
+    public  Page<UserVM> allusers(Pageable pageable, @CurrentUser User user){
         Page<UserVM> userList = userService.allUsers(user,pageable).map(UserVM::new);
-        return ResponseEntity.ok(userList);
+        return userList;
     }
 
-    @GetMapping("/users{username}")
+    @GetMapping("/users/{username}")
     @ApiOperation(value = "Get all users")
-    public  ResponseEntity<UserVM> user(@PathVariable String username){
+    public  UserVM user(@PathVariable String username){
         User user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(new UserVM(user));
+        return new UserVM(user);
     }
 
     @PutMapping("/users/{username}")
     @ApiOperation(value = "Update User", notes = "Urban legends update user ")
     @PreAuthorize("#username == principal.username")
-    public ResponseEntity<?>  updateUser(@Valid @RequestBody UserUpdateVM userUpdateVM,@PathVariable String username){
+    public UserVM  updateUser(@Valid @RequestBody UserUpdateVM userUpdateVM,@PathVariable String username){
         User user = userService.updateUser(username,userUpdateVM);
-        return ResponseEntity.ok(new UserVM(user));
+        return new UserVM(user);
     }
 
     @DeleteMapping("/users/{username}")

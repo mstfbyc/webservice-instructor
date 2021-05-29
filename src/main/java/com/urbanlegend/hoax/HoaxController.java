@@ -6,7 +6,6 @@ import com.urbanlegend.shared.CurrentUser;
 import com.urbanlegend.shared.GenericResponse;
 import com.urbanlegend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,26 +20,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RestController("/api/1.0")
+@RestController
+@RequestMapping("/api/1.0")
 public class HoaxController {
 
     @Autowired
     HoaxService hoaxService;
 
     @PostMapping("/hoaxes")
-    ResponseEntity<GenericResponse> saveHoax(@Valid @RequestBody HoaxSubmitVM hoax, @CurrentUser User user){
+    GenericResponse saveHoax(@Valid @RequestBody HoaxSubmitVM hoax, @CurrentUser User user){
         hoaxService.save(hoax,user);
-        return ResponseEntity.ok(new GenericResponse("Hoax başarı ile kaydedildi."));
+        return new GenericResponse("Hoax başarı ile kaydedildi.");
     }
 
     @GetMapping("/hoaxes")
-    ResponseEntity<Page<HoaxVM>> getHoax(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page){
-        return ResponseEntity.ok(hoaxService.getHoaxes(page).map(HoaxVM::new));
+    Page<HoaxVM> getHoax(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page){
+        return hoaxService.getHoaxes(page).map(HoaxVM::new);
     }
 
     @GetMapping("/users/{username}/hoaxes")
-    ResponseEntity<Page<HoaxVM>> getUserHoaxes(@PathVariable String username, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page){
-        return ResponseEntity.ok(hoaxService.getHoaxesOfUser(username, page).map(HoaxVM::new));
+    Page<HoaxVM> getUserHoaxes(@PathVariable String username, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page){
+        return hoaxService.getHoaxesOfUser(username, page).map(HoaxVM::new);
     }
 
     @GetMapping({"/hoaxes/{id:[0-9]+}", "/users/{username}/hoaxes/{id:[0-9]+}"})
@@ -66,8 +66,8 @@ public class HoaxController {
 
     @DeleteMapping("/hoaxes/{id:[0-9]+}")
     @PreAuthorize("@hoaxSecurity.isAllowedToDelete(#id, principal)")
-    ResponseEntity<GenericResponse> deleteHoax(@PathVariable long id) {
+    GenericResponse deleteHoax(@PathVariable long id) {
         hoaxService.delete(id);
-        return ResponseEntity.ok(new GenericResponse("Hoax removed"));
+        return new GenericResponse("Hoax removed");
     }
 }
