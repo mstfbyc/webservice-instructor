@@ -52,14 +52,14 @@ public class HoaxService {
     }
 
     public Page<Hoax> getHoaxesOfUser(String username, Pageable page) {
-        User inDB = userService.getUser(username);
+        User inDB = userService.getUserByUsername(username);
         return hoaxRepository.findByUser(inDB, page);
     }
 
     public Page<Hoax> getOldHoaxes(long id, String username, Pageable page) {
         Specification<Hoax> specification = idLessThan(id);
         if(username != null) {
-            User inDB = userService.getUser(username);
+            User inDB = userService.getUserByUsername(username);
             specification = specification.and(userIs(inDB));
         }
         return hoaxRepository.findAll(specification, page);
@@ -68,7 +68,7 @@ public class HoaxService {
     public long getNewHoaxesCount(long id, String username) {
         Specification<Hoax> specification = idGreaterThan(id);
         if(username != null) {
-            User inDB = userService.getUser(username);
+            User inDB = userService.getUserByUsername(username);
             specification = specification.and(userIs(inDB));
         }
         return hoaxRepository.count(specification);
@@ -77,7 +77,7 @@ public class HoaxService {
     public List<Hoax> getNewHoaxes(long id, String username, Sort sort) {
         Specification<Hoax> specification = idGreaterThan(id);
         if(username != null) {
-            User inDB = userService.getUser(username);
+            User inDB = userService.getUserByUsername(username);
             specification = specification.and(userIs(inDB));
         }
         return hoaxRepository.findAll(specification, sort);

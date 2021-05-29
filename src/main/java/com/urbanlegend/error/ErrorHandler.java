@@ -26,10 +26,7 @@ public class ErrorHandler implements ErrorController {
         String path = (String) attributes.get("path");
         int status = (Integer) attributes.get("status");
         ApiError error = new ApiError(status, message, path);
-        //İf validation dışında nullpointer al bu kısmı ekle
         if(attributes.containsKey("errors")) {
-            @SuppressWarnings("unchecked")//Type safe warrıng kapatıyor
-            //Validation sonra ekle buradan sonrası
             List<FieldError> fieldErrors = (List<FieldError>)attributes.get("errors");//Validation sonra ekle
             Map<String, String> validationErrors = new HashMap<>();
             for(FieldError fieldError: fieldErrors) {
@@ -40,10 +37,8 @@ public class ErrorHandler implements ErrorController {
         return error;
     }
 
-
     @Override
     public String getErrorPath() {
         return "/error";
     }
-
 }

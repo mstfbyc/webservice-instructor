@@ -37,7 +37,7 @@ public class UserService {
         return response;
     }
 
-    public User getUser(String username) {
+    public User getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if(user == null){
             throw new NotFoundException();
@@ -46,7 +46,7 @@ public class UserService {
     }
 
     public User updateUser(String username, UserUpdateVM userUpdateVM) {
-        User user = getUser(username);
+        User user = getUserByUsername(username);
         user.setDisplayName(userUpdateVM.getDisplayName());
         if(userUpdateVM.getImage()!=null){
             String oldImage = user.getImage();

@@ -3,6 +3,7 @@ package com.urbanlegend.file;
 import com.urbanlegend.configuration.AppConfiguration;
 import com.urbanlegend.user.User;
 import org.apache.tika.Tika;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@EnableScheduling
 public class FileService {
     AppConfiguration appConfiguration;
     FileAttachmentRepository fileAttachmentRepository;

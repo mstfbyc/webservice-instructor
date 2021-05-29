@@ -22,10 +22,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().authenticationEntryPoint(new AuthEntryPoint());
         http.headers().frameOptions().disable();
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/api/1.0/auth").authenticated()
                 .antMatchers(HttpMethod.PUT,"/api/1.0/users/{username}").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/1.0/hoaxes").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/1.0/hoax-attachments").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/1.0/logout").authenticated()
                 .and()
                 .authorizeRequests().anyRequest().permitAll();
 
