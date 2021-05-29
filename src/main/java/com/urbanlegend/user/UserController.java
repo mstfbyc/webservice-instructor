@@ -40,7 +40,7 @@ public class UserController {
     @GetMapping("/users{username}")
     @ApiOperation(value = "Get all users")
     public  ResponseEntity<UserVM> user(@PathVariable String username){
-        User user = userService.getUser(username);
+        User user = userService.getUserByUsername(username);
         return ResponseEntity.ok(new UserVM(user));
     }
 

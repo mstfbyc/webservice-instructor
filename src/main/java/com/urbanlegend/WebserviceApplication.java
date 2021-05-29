@@ -39,17 +39,20 @@ public class WebserviceApplication {
 	@Profile("dev")
 	CommandLineRunner createInitialUsers(UserService userService, HoaxService hoaxService) {
 		return (args) -> {
-			for (int i = 1; i < 20; i++) {
-				User user = User.builder()
-						.username("user"+i)
-						.displayName("user"+i)
-						.password("Password123")
-						.build();
-				userService.saveUser(user);
-				for (int j = 1; j <=2 ; j++) {
-					HoaxSubmitVM hoax = new HoaxSubmitVM();
-					hoax.setContent("hoax - ("+j+") From user("+i+")");
-					hoaxService.save(hoax,user);
+			try {
+				userService.getUserByUsername("user1");
+			} catch (Exception e) {
+				for(int i = 1; i<=25;i++) {
+					User user = new User();
+					user.setUsername("user"+i);
+					user.setDisplayName("display"+i);
+					user.setPassword("P4ssword");
+					userService.saveUser(user);
+					for(int j = 1;j<=20;j++) {
+						HoaxSubmitVM hoax = new HoaxSubmitVM();
+						hoax.setContent("hoax (" +j + ") from user ("+i+")");
+						hoaxService.save(hoax, user);
+					}
 				}
 			}
 		};

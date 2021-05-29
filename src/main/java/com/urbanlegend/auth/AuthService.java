@@ -21,7 +21,6 @@ public class AuthService {
     TokenRepository tokenRepository;
 
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenRepository tokenRepository) {
-        super();
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenRepository = tokenRepository;
