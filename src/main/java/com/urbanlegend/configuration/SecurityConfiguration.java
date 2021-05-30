@@ -33,8 +33,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
-
-
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
