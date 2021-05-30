@@ -117,5 +117,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>urban-legends-0.0.1-SNAPSHOT</finalName>
 	</build>
 </project>
